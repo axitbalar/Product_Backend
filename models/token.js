@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // Define schema and model
 const tokenSchema = new mongoose.Schema({
-    token: { type: String, required: true, unique: true },
+    token: { type: String, required: true },
     createdAt: { type: Date, default: Date.now }
 });
 
