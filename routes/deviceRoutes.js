@@ -7,6 +7,6 @@ const router = express.Router();
 router.post('/devices', deviceController.addDevice);
 // router.post('/sendNotification', deviceController.sendNotification);
 router.post('/token', deviceController.addToken);
-router.post('/send-notification', deviceController.sendNotofication)
+router.post('/send-notification', deviceController.sendNotification)
 
 module.exports = router;

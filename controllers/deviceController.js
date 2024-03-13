@@ -33,19 +33,26 @@ const addToken = async (req, res) => {
 };
 
 
-const sendNotofication = async (req, res) => {
+const sendNotification = async (req, res) => {
     try {
-        const { title, body } = req.body
+        const { title, body } = req.body;
         const tokens = await Token.find({}, 'token');
-        const deviceTokens = tokens.map(tokenDoc => tokenDoc.token);
 
-        const notifications = deviceTokens.map(token => ({
-            token: token,
-            notification: {
-                title: title,
-                body: body
+        const deviceMap = new Map();
+
+        tokens.forEach(tokenDoc => {
+            if (!deviceMap.has(tokenDoc.token)) {
+                deviceMap.set(tokenDoc.token, {
+                    token: tokenDoc.token,
+                    notification: {
+                        title: title,
+                        body: body
+                    }
+                });
             }
-        }));
+        });
+
+        const notifications = [...deviceMap.values()];
 
         const sendResults = await Promise.all(
             notifications.map(notification =>
@@ -53,19 +60,13 @@ const sendNotofication = async (req, res) => {
             )
         );
 
-        // await firebase.messaging().send({
-        //     token: "cLZYkTaHTT65rvYDscOSGy:APA91bG7uqtJJcnsjkArIXgL3O-AkEnSKuYdrk7AYze-Qdcuw1V23AC4NxYlZkFzPpM-QfeoIsa75SV2xtWy6w2-xapvJ_B-UZcYqwhWRb5osIdQhrJIbGti0yXFyjYc5o08_iGbZ91Q",
-        //     notification: {
-        //         title: title,
-        //         body: body
-        //     }
-        // })
-        res.status(201).json({ message: 'Notification send successfully.....!!!!!' });
-        // console.log("Notification send successfully.....!!!!!")
+        res.status(201).json({ message: 'Notifications sent successfully!' });
     } catch (error) {
-        console.log('error', error)
+        console.log('Error:', error);
+        res.status(500).json({ error: 'Failed to send notifications.' });
     }
-}
+};
+
 
 // const sendNotification = async (req, res) => {
 //     try {
@@ -90,5 +91,5 @@ module.exports = {
     addDevice,
     // sendNotification,
     addToken,
-    sendNotofication
+    sendNotification
 };
