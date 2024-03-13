@@ -23,19 +23,15 @@ const addDevice = async (req, res) => {
 const addToken = async (req, res) => {
     try {
         const { token } = req.body;
-        const newDevice = new Token({ token });
-        await newDevice.save();
+        const newToken = new Token({ token });
+        await newToken.save();
         res.status(201).json({ message: 'Token stored successfully' });
     } catch (error) {
-        if (error.code === 11000) {
-            // Duplicate key error, deviceId already exists
-            res.status(400).json({ message: 'Token already exists' });
-        } else {
-            console.error(error);
-            res.status(500).json({ message: 'Internal server error' });
-        }
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 
 const sendNotofication = async (req, res) => {
     try {
