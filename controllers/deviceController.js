@@ -23,14 +23,23 @@ const addDevice = async (req, res) => {
 const addToken = async (req, res) => {
     try {
         const { token } = req.body;
+
+        const existingToken = await Token.findOne({ token });
+
+        if (existingToken) {
+            await Token.deleteOne({ token: existingToken.token });
+        }
+
         const newToken = new Token({ token });
         await newToken.save();
+
         res.status(201).json({ message: 'Token stored successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 
 
 const sendNotification = async (req, res) => {
