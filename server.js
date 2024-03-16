@@ -17,26 +17,9 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/api', deviceRoutes);
-
-// const sendNotification = async () => {
-//     try {
-//         await firebase.messaging().send({
-//             token: "cLZYkTaHTT65rvYDscOSGy:APA91bG7uqtJJcnsjkArIXgL3O-AkEnSKuYdrk7AYze-Qdcuw1V23AC4NxYlZkFzPpM-QfeoIsa75SV2xtWy6w2-xapvJ_B-UZcYqwhWRb5osIdQhrJIbGti0yXFyjYc5o08_iGbZ91Q",
-//             notification: {
-//                 title: "this is title",
-//                 body: "this is body"
-//             }
-//         })
-//         console.log("Notification send successfully.....!!!!!")
-//     } catch (error) {
-//         console.log('error', error)
-//     }
-
-// }
-
-// setTimeout(() => {
-//     sendNotification()
-// }, 2000)
+app.get('/', (req, res) => {
+    res.status(200).json({ "Message": "Api is running successfully " });
+})
 
 // Start the server
 app.listen(port, () => {
